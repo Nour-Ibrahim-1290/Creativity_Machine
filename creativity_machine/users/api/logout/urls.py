@@ -2,5 +2,5 @@ from django.urls import path
 from .views import LogoutView
 
 urlpatterns = [
-    path('', LogoutView.as_view(), name='register'),
+    path('', LogoutView.as_view(), name='logout'),
 ]

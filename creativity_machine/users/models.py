@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, name, email, password=None, age=None, phone=None, gender=None, is_admin=False):
+    def create_user(self, name, email, password=None, age=None, phone=None, gender=None, country=None, city=None, IQ=None, is_admin=False):
         if not name:
             raise ValueError('Users must have a name')
         
@@ -17,6 +17,9 @@ class MyUserManager(BaseUserManager):
             age=age,
             phone=phone,
             gender=gender,
+            country=country,
+            city=city,
+            IQ=IQ,
             is_admin=is_admin,
         )
 
@@ -53,6 +56,7 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=255, null=False)
     country = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
+    IQ = models.CharField(max_length=10, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True, default=0)
     gender = models.CharField(max_length=255, choices=USER_GENDER_CHOICES, null=True)
     account_state = models.CharField(max_length=255, choices=ACCOUNT_STATE_CHOICES, default='initial')

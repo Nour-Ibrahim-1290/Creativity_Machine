@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+import { FaLightbulb } from "react-icons/fa";
+import { RiChatHistoryFill } from "react-icons/ri";
+import { PiListHeartBold } from "react-icons/pi";
+import { GiSun } from "react-icons/gi";
+
+
+
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import LogoImage from "../images/Logo.png";
 
 function Sidebar({
   sidebarOpen,
@@ -64,11 +72,11 @@ function Sidebar({
         className={`flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-white dark:bg-gray-800 p-4 transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-64"} ${variant === 'v2' ? 'border-r border-gray-200 dark:border-gray-700/60' : 'rounded-r-2xl shadow-sm'}`}
       >
         {/* Sidebar header */}
-        <div className="flex justify-between mb-10 pr-3 sm:px-2">
+        <div className="flex justify-center mb-6 ">
           {/* Close button */}
-          <button
+          {/* <button
             ref={trigger}
-            className="lg:hidden text-gray-500 hover:text-gray-400"
+            className="lg:hidden text-gray-900 hover:text-gray-100"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-controls="sidebar"
             aria-expanded={sidebarOpen}
@@ -77,12 +85,10 @@ function Sidebar({
             <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
             </svg>
-          </button>
+          </button> */}
           {/* Logo */}
-          <NavLink end to="/" className="block">
-            <svg className="fill-violet-500" xmlns="http://www.w3.org/2000/svg" width={32} height={32}>
-              <path d="M31.956 14.8C31.372 6.92 25.08.628 17.2.044V5.76a9.04 9.04 0 0 0 9.04 9.04h5.716ZM14.8 26.24v5.716C6.92 31.372.63 25.08.044 17.2H5.76a9.04 9.04 0 0 1 9.04 9.04Zm11.44-9.04h5.716c-.584 7.88-6.876 14.172-14.756 14.756V26.24a9.04 9.04 0 0 1 9.04-9.04ZM.044 14.8C.63 6.92 6.92.628 14.8.044V5.76a9.04 9.04 0 0 1-9.04 9.04H.044Z" />
-            </svg>
+          <NavLink end to="/history/products" className="block">
+            <img className="mt-2" src={LogoImage} width="220" height="100" alt="Logo"></img>
           </NavLink>
         </div>
 
@@ -90,22 +96,38 @@ function Sidebar({
         <div className="space-y-8">
           {/* Pages group */}
           <div>
-            <h3 className="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
-              <span className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">
-                •••
-              </span>
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
-            </h3>
             <ul className="mt-3">
+              
+              {/* Messages */}
+              <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("machine") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
+                <NavLink
+                  end
+                  to="/machine/welcome"
+                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
+                    pathname.includes("machine") ? "" : "hover:text-gray-900 dark:hover:text-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="grow flex items-center">
+                      <FaLightbulb className={`shrink-0 fill-current ${pathname.includes('machine') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-400'}`} />
+                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Creativity Machine
+                      </span>
+                    </div>
+                  </div>
+                </NavLink>
+              </li>
+              
+              
               {/* E-Commerce */}
-              <SidebarLinkGroup activecondition={pathname.includes("ecommerce")}>
+              <SidebarLinkGroup activecondition={pathname.includes("history")}>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <a
                         href="#0"
                         className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                          pathname.includes("ecommerce") ? "" : "hover:text-gray-900 dark:hover:text-white"
+                          pathname.includes("history") ? "" : "hover:text-gray-900 dark:hover:text-white"
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -115,11 +137,9 @@ function Sidebar({
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <svg className={`shrink-0 fill-current ${pathname.includes('ecommerce') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                              <path d="M9 6.855A3.502 3.502 0 0 0 8 0a3.5 3.5 0 0 0-1 6.855v1.656L5.534 9.65a3.5 3.5 0 1 0 1.229 1.578L8 10.267l1.238.962a3.5 3.5 0 1 0 1.229-1.578L9 8.511V6.855ZM6.5 3.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm4.803 8.095c.005-.005.01-.01.013-.016l.012-.016a1.5 1.5 0 1 1-.025.032ZM3.5 11c.474 0 .897.22 1.171.563l.013.016.013.017A1.5 1.5 0 1 1 3.5 11Z" />
-                            </svg>
+                            <GiSun className={`shrink-0 fill-current ${pathname.includes('history') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-400'}`} />
                             <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                              E-Commerce
+                              Creative History
                             </span>
                           </div>
                           {/* Icon */}
@@ -135,13 +155,13 @@ function Sidebar({
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/ecommerce/shop"
+                              to="/history/products"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " + (isActive ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
                               }
                             >
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Shop
+                                Creative Products
                               </span>
                             </NavLink>
                           </li>
@@ -149,13 +169,13 @@ function Sidebar({
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/ecommerce/product"
+                              to="/history/tests"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " + (isActive ? "text-violet-500" : "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
                               }
                             >
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Single Product
+                                Creativity Tests
                               </span>
                             </NavLink>
                           </li>
@@ -277,32 +297,6 @@ function Sidebar({
                 }}
               </SidebarLinkGroup>
 
-              {/* Messages */}
-              <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("messages") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}>
-                <NavLink
-                  end
-                  to="/messages"
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages") ? "" : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="grow flex items-center">
-                      <svg className={`shrink-0 fill-current ${pathname.includes('messages') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                        <path d="M13.95.879a3 3 0 0 0-4.243 0L1.293 9.293a1 1 0 0 0-.274.51l-1 5a1 1 0 0 0 1.177 1.177l5-1a1 1 0 0 0 .511-.273l8.414-8.414a3 3 0 0 0 0-4.242L13.95.879ZM11.12 2.293a1 1 0 0 1 1.414 0l1.172 1.172a1 1 0 0 1 0 1.414l-8.2 8.2-3.232.646.646-3.232 8.2-8.2Z" />
-                        <path d="M10 14a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5Z" />
-                      </svg>
-                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        Messages
-                      </span>
-                    </div>
-                    {/* Badge */}
-                    <div className="flex flex-shrink-0 ml-2">
-                      <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded">4</span>
-                    </div>
-                  </div>
-                </NavLink>
-              </li>
               
               
               

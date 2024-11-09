@@ -9,6 +9,10 @@ import './css/style.css';
 
 
 // Import pages
+import MachineWelcome from './pages/machine/Welcome';
+import MachineInstruct from './pages/machine/Instructions';
+import MachinePickDevice from './pages/machine/PickDevice';
+
 import Shop from './pages/machine/Shop';
 import Product from './pages/machine/Product';
 import UsersTiles from './pages/machine/UserTiles';
@@ -58,8 +62,14 @@ function App() {
         <Route path="/onboarding-04" element={<Onboarding04 />} />
 
         {/** Creativity Machine Sequance Routes */}
-        <Route path="/ecommerce/shop" element={<Shop />} />
-        <Route path="/ecommerce/product" element={<Product />} />
+        <Route path="/machine/welcome" element={<MachineWelcome />} />
+        <Route path="/machine/instructions" element={<MachineInstruct />} />
+        <Route path="/machine/pickdevice" element={<MachinePickDevice />} />
+        
+        
+        {/** Creativity Machine History Routes */}
+        <Route path="/history/products" element={<Shop />} />
+        <Route path="/history/tests" element={<Product />} />
         <Route path="/community/users-tiles" element={<UsersTiles />} />
         <Route path="/job/company-profile" element={<CompanyProfile />} />
 

@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+
+# Logout View (clear session for the current user)
 class LogoutView(APIView):
     """Logout Process."""
     def post(self, request):

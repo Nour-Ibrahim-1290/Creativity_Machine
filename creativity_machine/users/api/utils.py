@@ -23,7 +23,6 @@ def generate_tokens(user):
 
     response_data = {
         'username': user_data['name'],
-        'user_type': user_data['user_type'],
         'userdata': user_data, 
         'token': token_data
     }
