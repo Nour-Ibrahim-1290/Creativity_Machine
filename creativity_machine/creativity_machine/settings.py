@@ -80,7 +80,7 @@ ROOT_URLCONF = 'creativity_machine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(FRONT_DIR, 'frontend/dist')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -225,3 +225,15 @@ CORS_ALLOW_HEADERS = [
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60*100),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 # }
+
+
+
+# Email settings
+## Primary
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mbs.team.general@gmail.com'
+DEFAULT_FROM_EMAIL = 'mbs.team.general@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')

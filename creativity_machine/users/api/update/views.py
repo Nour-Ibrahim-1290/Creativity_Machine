@@ -1,10 +1,24 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+
+
+from users.models import User
 from ..serializers import UserSerializer
+from .serializers import PasswordResetSerializer
 
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class UpdateUserView(APIView):
@@ -32,3 +46,34 @@ class UpdateUserView(APIView):
         #     return Response(user_serializer.data, status=status.HTTP_200_OK)
         # else:
         #     return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class PasswordResetView(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    def post(self, request, format=None):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            try:
+                user = User.objects.get(email=email)
+                token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                reset_url = f"{os.getenv('FRONT_SERVER_URL')}/reset-password/{uid}/{token}/"
+                message = render_to_string('password_reset_email.html', {
+                    'user': user,
+                    'reset_url': reset_url,
+                })
+                send_mail(
+                    'Password Reset Request',
+                    message,
+                    'no-reply@example.com',
+                    [user.email],
+                    fail_silently=False,
+                )
+                return Response({'success': 'Password reset email sent'}, status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                return Response({'error': 'User with this email does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
