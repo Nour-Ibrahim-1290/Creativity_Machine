@@ -35,6 +35,10 @@ import Account from './pages/settings/Account';
 import Feedback from './pages/settings/Feedback';
 
 
+import { Provider } from 'react-redux';
+import store from './store';
+
+
 
 function App() {
 
@@ -47,51 +51,52 @@ function App() {
   }, [location.pathname]); 
 
   return (
-    <>
-      <Routes>
+    <Provider store={store}>
 
-        {/* <Route exact path="/" element={<Landing />} /> */}
-        
-        {/* Signing in routes */}
-        <Route path="/" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/onboarding-01" element={<Onboarding01 />} />
-        <Route path="/onboarding-02" element={<Onboarding02 />} />
-        <Route path="/onboarding-03" element={<Onboarding03 />} />
-        <Route path="/onboarding-04" element={<Onboarding04 />} />
+        <Routes>
 
-        {/** Creativity Machine Sequance Routes */}
-        <Route path="/machine/welcome" element={<MachineWelcome />} />
-        <Route path="/machine/instructions" element={<MachineInstruct />} />
-        <Route path="/machine/pickdevice" element={<MachinePickDevice />} />
-        
-        
-        {/** Creativity Machine History Routes */}
-        <Route path="/history/products" element={<Shop />} />
-        <Route path="/history/tests" element={<Product />} />
-        <Route path="/community/users-tiles" element={<UsersTiles />} />
-        <Route path="/job/company-profile" element={<CompanyProfile />} />
+          {/* <Route exact path="/" element={<Landing />} /> */}
+          
+          {/* Signing in routes */}
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/onboarding-01" element={<Onboarding01 />} />
+          <Route path="/onboarding-02" element={<Onboarding02 />} />
+          <Route path="/onboarding-03" element={<Onboarding03 />} />
+          <Route path="/onboarding-04" element={<Onboarding04 />} />
 
-
-        {/** My Account */}
-        <Route path="/settings/account" element={<Account />} />
+          {/** Creativity Machine Sequance Routes */}
+          <Route path="/machine/welcome" element={<MachineWelcome />} />
+          <Route path="/machine/instructions" element={<MachineInstruct />} />
+          <Route path="/machine/pickdevice" element={<MachinePickDevice />} />
+          
+          
+          {/** Creativity Machine History Routes */}
+          <Route path="/history/products" element={<Shop />} />
+          <Route path="/history/tests" element={<Product />} />
+          <Route path="/community/users-tiles" element={<UsersTiles />} />
+          <Route path="/job/company-profile" element={<CompanyProfile />} />
 
 
-        {/** Feedback */}
-        <Route path="/settings/feedback" element={<Feedback />} />
-        <Route path="/utility/faqs" element={<Faqs />} />
+          {/** My Account */}
+          <Route path="/settings/account" element={<Account />} />
 
 
-        {/** Defaults */}
-        <Route path="/utility/empty-state" element={<EmptyState />} />
-        <Route path="/utility/404" element={<PageNotFound />} />
-        <Route path="*" element={<PageNotFound />} />
+          {/** Feedback */}
+          <Route path="/settings/feedback" element={<Feedback />} />
+          <Route path="/utility/faqs" element={<Faqs />} />
 
 
-        
-      </Routes>
-    </>
+          {/** Defaults */}
+          <Route path="/utility/empty-state" element={<EmptyState />} />
+          <Route path="/utility/404" element={<PageNotFound />} />
+          <Route path="*" element={<PageNotFound />} />
+
+
+          
+        </Routes>
+    </Provider>
   );
 }
 

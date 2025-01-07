@@ -2,7 +2,9 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
+import config from '../config/config';
 
 import AuthImage from "../images/AuthImage.png";
 import LogoImage from "../images/Logo.png";
@@ -26,7 +28,7 @@ function Signin() {
     // Handle form submission
     console.log(values);
   
-    const response = await axios.post('http://127.0.0.1:8000/users/login/', values);
+    const response = await axios.post(`${config.serverUrl}/users/login/`, values);
     if (response.status >= 200 && response.status < 300) {
         console.log('Sign In Successfully!');
         localStorage.setItem('userData', JSON.stringify(response.data));

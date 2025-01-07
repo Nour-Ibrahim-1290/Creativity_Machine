@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Transition from '../utils/Transition';
+import { Link, useNavigate } from 'react-router-dom';
 
+import axios from 'axios';
+import config from '../config/config';
+
+import Transition from '../utils/Transition';
 import UserAvatar from '../images/signup.png';
 
 function DropdownProfile({
@@ -37,6 +40,57 @@ function DropdownProfile({
 
   const userData = JSON.parse(localStorage.getItem('userData'));
   const userName = userData ? userData.user.name : 'User';
+
+
+  const navigate = useNavigate();
+
+  // const getCsrfToken = () => {
+  //   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  //   return csrfToken;
+  // };
+  const getCsrfToken = () => {
+    const csrfToken = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('csrftoken='))
+      ?.split('=')[1];
+    return csrfToken;
+  };
+
+  const handleSignOut = async () => {
+    try {
+        const response = await axios.post(`${config.serverUrl}/users/logout/`,
+          {},
+          {
+            headers: {
+              'X-CSRFToken': getCsrfToken(),
+              'Content-Type': 'application/json'
+            },
+            withCredentials: true,
+          });
+        console.log(response);
+        if (response.status >= 200 & response.status < 300) {
+          console.log("Successfully logged out:", response.data);
+          localStorage.removeItem('userData');
+          navigate("/");
+        }
+    
+    } catch (error) {
+      console.error("Error logging out:", error.response ? error.response.data : error.message);
+    }
+    
+  };
+
+  // Call the CSRF token view when the component mounts
+  useEffect(() => {
+  axios.get(`${config.serverUrl}/api/get-csrf-token/`, 
+    { withCredentials: true })
+    .then(response => {
+      console.log("CSRF token set:", response.data.csrfToken);
+    })
+    .catch(error => {
+      console.error("Error setting CSRF token:", error.response ? error.response.data : error.message);
+    });
+}, []);
 
 
   return (
@@ -80,7 +134,7 @@ function DropdownProfile({
             <li>
               <Link
                 className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-                to="/settings"
+                to="/settings/account"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 Settings
@@ -89,8 +143,7 @@ function DropdownProfile({
             <li>
               <Link
                 className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-                to="/signin"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={handleSignOut}
               >
                 Sign Out
               </Link>
