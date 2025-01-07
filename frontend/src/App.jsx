@@ -9,6 +9,7 @@ import './css/style.css';
 
 
 // Import pages
+import Layout from './layout';
 import MachineWelcome from './pages/machine/Welcome';
 import MachineInstruct from './pages/machine/Instructions';
 import MachinePickDevice from './pages/machine/PickDevice';
@@ -53,9 +54,8 @@ function App() {
   return (
     <Provider store={store}>
 
+      <Layout>
         <Routes>
-
-          {/* <Route exact path="/" element={<Landing />} /> */}
           
           {/* Signing in routes */}
           <Route path="/" element={<Signin />} />
@@ -96,6 +96,7 @@ function App() {
 
           
         </Routes>
+      </Layout>
     </Provider>
   );
 }

@@ -3,8 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, Navigate } from "react-router-dom";
 
-import axios from "axios";
-import config from '../config/config';
 
 import AuthImage from "../images/AuthImage.png";
 import LogoImage from "../images/Logo.png";
@@ -28,7 +26,7 @@ const SignupSchema = Yup.object().shape({
 
 
 
-function Signup({ register }) {
+function Signup({ register, isAuthenticated }) {
 	const [accountCreated, setAccountCreated] = useState(false);
 
 
@@ -51,8 +49,11 @@ function Signup({ register }) {
 		setAccountCreated(true);
 	}
 
-	// if (accountCreated)
-	// 	return <Navigate to="/" />;
+	
+	if (isAuthenticated)
+		return <Navigate to='/machine/welcome' />;
+	else if (accountCreated) 
+		return <Navigate to="/" />;
 
 	return (
 		<main className="bg-white dark:bg-gray-900 min-h-screen">
@@ -178,7 +179,7 @@ function Signup({ register }) {
 											</div>
 
 											<div className="flex items-center justify-between mt-6">
-												<button type="submit" className="btn cursor-pointer bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-violet-300 ml-3 whitespace-nowrap font-bold">
+												<button type="submit" className="btn cursor-pointer bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-violet-300 ml-3 whitespace-nowrap font-bold" disabled={isSubmitting}>
 													Sign Up
 												</button>
 											</div>
@@ -207,4 +208,8 @@ function Signup({ register }) {
 	);
 }
 
-export default connect(null, { register })(Signup);
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+  });
+
+export default connect(mapStateToProps, { register })(Signup);

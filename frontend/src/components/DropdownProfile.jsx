@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 
-import axios from 'axios';
-import config from '../config/config';
 
 import Transition from '../utils/Transition';
 import UserAvatar from '../images/signup.png';
 
-function DropdownProfile({
-  align
-}) {
+
+import { connect } from "react-redux";
+import { logout } from "../actions/auth";
+
+
+function DropdownProfile({ align, logout, isAuthenticated, username }) {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -36,61 +37,10 @@ function DropdownProfile({
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+  
 
-
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  const userName = userData ? userData.user.name : 'User';
-
-
-  const navigate = useNavigate();
-
-  // const getCsrfToken = () => {
-  //   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  //   return csrfToken;
-  // };
-  const getCsrfToken = () => {
-    const csrfToken = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('csrftoken='))
-      ?.split('=')[1];
-    return csrfToken;
-  };
-
-  const handleSignOut = async () => {
-    try {
-        const response = await axios.post(`${config.serverUrl}/users/logout/`,
-          {},
-          {
-            headers: {
-              'X-CSRFToken': getCsrfToken(),
-              'Content-Type': 'application/json'
-            },
-            withCredentials: true,
-          });
-        console.log(response);
-        if (response.status >= 200 & response.status < 300) {
-          console.log("Successfully logged out:", response.data);
-          localStorage.removeItem('userData');
-          navigate("/");
-        }
-    
-    } catch (error) {
-      console.error("Error logging out:", error.response ? error.response.data : error.message);
-    }
-    
-  };
-
-  // Call the CSRF token view when the component mounts
-  useEffect(() => {
-  axios.get(`${config.serverUrl}/api/get-csrf-token/`, 
-    { withCredentials: true })
-    .then(response => {
-      console.log("CSRF token set:", response.data.csrfToken);
-    })
-    .catch(error => {
-      console.error("Error setting CSRF token:", error.response ? error.response.data : error.message);
-    });
-}, []);
+  if (!isAuthenticated)
+    return <Navigate to="/" />;
 
 
   return (
@@ -104,7 +54,7 @@ function DropdownProfile({
       >
         <img className="w-8 h-8 rounded-full" src={UserAvatar} width="32" height="32" alt="User" />
         <div className="flex items-center truncate">
-          <span className="truncate ml-2 text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-500 dark:group-hover:text-violet-400">{userName}</span>
+          <span className="truncate ml-2 text-sm font-medium text-gray-600 dark:text-gray-100 group-hover:text-gray-500 dark:group-hover:text-violet-400">{username}</span>
           <svg className="w-3 h-3 shrink-0 ml-2 fill-current text-gray-400 dark:text-gray-300" viewBox="0 0 12 12">
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
           </svg>
@@ -127,7 +77,7 @@ function DropdownProfile({
           onBlur={() => setDropdownOpen(false)}
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
-            <div className="font-medium text-gray-800 dark:text-gray-100">{userName}</div>
+            <div className="font-medium text-gray-800 dark:text-gray-100">{username}</div>
             
           </div>
           <ul>
@@ -141,18 +91,24 @@ function DropdownProfile({
               </Link>
             </li>
             <li>
-              <Link
+              <a href="#!"
                 className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-                onClick={handleSignOut}
+                onClick={logout}
               >
                 Sign Out
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
       </Transition>
     </div>
-  )
-}
+  );
+};
 
-export default DropdownProfile;
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  username: state.profile.username,
+});
+
+export default connect(mapStateToProps, { logout })(DropdownProfile);

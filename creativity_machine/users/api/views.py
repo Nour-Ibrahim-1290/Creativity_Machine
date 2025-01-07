@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
@@ -17,11 +17,14 @@ class GetCSRFToken(APIView):
         return Response({ 'success': 'CSRF Cookie set' })
 
 
-@method_decorator(csrf_protect, name='dispatch')
+
 class checkAuthenticatedView(APIView):
     def get(self, request, format=None):
+        user = self.request.user
+
         try:
-            IsAuthenticated = User.is_authenticated
+            IsAuthenticated = user.is_authenticated
+            print(IsAuthenticated)
 
             if IsAuthenticated:
                 return Response({'isAuthenticated': 'success'})
@@ -51,10 +54,9 @@ class GetUserView(APIView):
         try:
             user = self.request.user
 
-            user = User.objects.get(id=user.id)
+            user_serializer = UserSerializer(user)
 
-            user = UserSerializer(user)
-
-            return Response({'profile': user.data, 'email': str(user.email)})
+            # print(user)
+            return Response({'profile': user_serializer.data, 'email': str(user.email)})
         except:
             return Response({'error': 'Error Retrieving Profile'}, status=status.HTTP_401_UNAUTHORIZED)

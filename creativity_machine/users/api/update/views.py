@@ -10,12 +10,10 @@ from ..serializers import UserSerializer
 class UpdateUserView(APIView):
     """Update User Profile."""
 
-    def post(self, request):
+    def put(self, request, format=None):
         """Update a user profile."""
         try:
             user = self.request.user
-            
-            user = User.objects.get(id=user.id)
 
             User.objects.filter(id=user.id).update(**request.data)
 
@@ -24,7 +22,8 @@ class UpdateUserView(APIView):
 
             return Response({ 
                 'profile': user_serializer.data, 
-                'email': str(user.email) }, status=status.HTTP_200_OK)
+                'email': str(user.email) },
+                status=status.HTTP_200_OK)
         except:
             return Response({'error': 'Error Updating Profile'}, status=status.HTTP_401_UNAUTHORIZED)
         # user_serializer = UserSerializer(user, data=request.data, partial=True)

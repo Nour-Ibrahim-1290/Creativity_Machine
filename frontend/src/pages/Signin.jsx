@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-import axios from 'axios';
-import config from '../config/config';
 
 import AuthImage from "../images/AuthImage.png";
 import LogoImage from "../images/Logo.png";
 
+import { connect } from "react-redux";
+import { login } from "../actions/auth";
+import CSRFToken from '../components/CSRFToken';
 
 
 
@@ -20,24 +21,29 @@ const SigninSchema = Yup.object().shape({
 
 
 
-function Signin() {
+function Signin({ login, isAuthenticated }) {
 
-  const navigate = useNavigate();
+  // const [loggedIn, setLoggedIn] = useState(false);
 
-  const LoginForm = async (values) => {
+  const LoginForm = async (loginData) => {
     // Handle form submission
-    console.log(values);
+    console.log(loginData);
   
-    const response = await axios.post(`${config.serverUrl}/users/login/`, values);
-    if (response.status >= 200 && response.status < 300) {
-        console.log('Sign In Successfully!');
-        localStorage.setItem('userData', JSON.stringify(response.data));
-        navigate('/machine/welcome');
-    } else {
-        // Handle the case where the first request was not successful
-        console.error('There was a Problem Signing in to Account!');
-    }
+    // const response = await axios.post(`${config.serverUrl}/users/login/`, values);
+    // if (response.status >= 200 && response.status < 300) {
+    //     console.log('Sign In Successfully!');
+    //     localStorage.setItem('userData', JSON.stringify(response.data));
+    //     navigate('/machine/welcome');
+    // } else {
+    //     // Handle the case where the first request was not successful
+    //     console.error('There was a Problem Signing in to Account!');
+    // }
+    login(loginData);
+    // setLoggedIn(true);
   };
+
+  if (isAuthenticated)
+    return <Navigate to="/machine/welcome" />;
 
   return (
     <main className="bg-white dark:bg-gray-900">
@@ -65,12 +71,12 @@ function Signin() {
                 }}
                 validationSchema={SigninSchema}
                 onSubmit={(values) => {
-                  console.log(values);
                   LoginForm(values);
                 }}
               >
                 {({ isSubmitting }) => (
                   <Form>
+                    <CSRFToken />
                     <div className="space-y-4 text-violet-100">
                       <div>
                         <label className="block text-sm font-medium mb-1" htmlFor="email">
@@ -120,6 +126,10 @@ function Signin() {
       </div>
     </main>
   );
-}
+};
 
-export default Signin;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(Signin);
