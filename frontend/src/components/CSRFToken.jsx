@@ -9,8 +9,8 @@ const getCookie = (name) => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         let cookies = document.cookie.split(';');
-        // console.log(cookies);
-        console.log(cookies[0].length);
+        //console.log(cookies);
+        //console.log(cookies[0].length);
         for (let i = 0; i < cookies.length; i++) {
             let cookie = cookies[i].trim();
             // Does this cookie string begin with the name we want?
@@ -20,7 +20,7 @@ const getCookie = (name) => {
             }
         }
     }
-    console.log(cookieValue);
+    //console.log(cookieValue);
     return cookieValue;
 };
 
@@ -38,7 +38,7 @@ const CSRFToken = () => {
                 await axios.get(`${config.serverUrl}/users/get-csrf-token/`, { withCredentials: true });
                 setCsrftoken(getCookie('csrftoken')); // Move this inside the try block
             } catch (error) {
-                console.error("Error fetching CSRF Tokens: " + error);
+                //console.error("Error fetching CSRF Tokens: " + error);
             }
         };
         fetchData();

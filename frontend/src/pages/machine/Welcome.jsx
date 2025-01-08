@@ -6,10 +6,7 @@ import Header from '../../partials/Header';
 
 
 import { FaLightbulb } from 'react-icons/fa';
-import { GiSunbeams } from "react-icons/gi";
-import { IoChatbubblesSharp } from "react-icons/io5";
-import { FaBraille } from "react-icons/fa";
-import { FaInstalod } from "react-icons/fa";
+
 
 
 

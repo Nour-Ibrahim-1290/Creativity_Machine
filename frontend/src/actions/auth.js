@@ -33,7 +33,7 @@ export const register = (registerData) => async dispatch => {
     }
 
     try {
-        console.log("In Actions: " +  JSON.stringify(registerData));
+        // console.log("In Actions: " +  JSON.stringify(registerData));
         const res = await axios.post(`${config.serverUrl}/users/register/`, 
             JSON.stringify(registerData), configAttr);
 
@@ -68,10 +68,10 @@ export const checkAuthenticated = () => async dispatch => {
     }
 
     try {
-        //console.log("In Actions: " +  JSON.stringify(registerData));
+        //// console.log("In Actions: " +  JSON.stringify(registerData));
         const res = await axios.get(`${config.serverUrl}/users/check-authenticated/`, configAttr);
 
-        // console.log(res.data);
+        // // console.log(res.data);
         if (res.data.error || res.data.isAuthenticated === 'error')
         {
          
@@ -104,7 +104,7 @@ export const checkAuthenticated = () => async dispatch => {
 
 
 export const login = (loginData) => async dispatch => {
-    // console.log(Cookies.get('csrftoken'));
+    // // console.log(Cookies.get('csrftoken'));
     const configAttr = {
         headers: {
             'Accept': 'application/json',
@@ -115,7 +115,7 @@ export const login = (loginData) => async dispatch => {
     }
 
     try {
-        //console.log("In Actions: " +  JSON.stringify(registerData));
+        //// console.log("In Actions: " +  JSON.stringify(registerData));
         const res = await axios.post(`${config.serverUrl}/users/login/`, 
             JSON.stringify(loginData), configAttr);
 
@@ -144,7 +144,7 @@ export const login = (loginData) => async dispatch => {
 
 
 export const logout = () => async dispatch => {
-    // console.log(Cookies.get('csrftoken'));
+    // // console.log(Cookies.get('csrftoken'));
     const configAttr = {
         headers: {
             'Accept': 'application/json',
@@ -155,33 +155,33 @@ export const logout = () => async dispatch => {
     }
 
     try {
-        console.log("In Actions: Logout");
+        // console.log("In Actions: Logout");
         const res = await axios.post(`${config.serverUrl}/users/logout/`, {}, configAttr);
 
         if (res.status <= 200 && res.status < 300) {
             dispatch({
                 type: LOGOUT_SUCCESS,
             });
-            console.log("Logged Out");
+            // console.log("Logged Out");
             
         } else {
             dispatch({
                 type: LOGOUT_FAILED
             });
-            console.log("Logged Out ELSE");
+            // console.log("Logged Out ELSE");
         }
     } catch (err) {
         dispatch({
             type: LOGOUT_FAILED
         });
-        console.log("Logged Out ERROR");
+        // console.log("Logged Out ERROR");
     }
 };
 
 
 
 export const forgetpassword = (emailData) => async dispatch => {
-    // console.log(Cookies.get('csrftoken'));
+    // // console.log(Cookies.get('csrftoken'));
     const configAttr = {
         headers: {
             'Accept': 'application/json',
@@ -192,33 +192,33 @@ export const forgetpassword = (emailData) => async dispatch => {
     }
 
     try {
-        console.log("In Actions: Forget Password");
+        // console.log("In Actions: Forget Password");
         const res = await axios.post(`${config.serverUrl}/users/update/forgetpassword/`, emailData, configAttr);
 
         if (res.status <= 200 && res.status < 300) {
             dispatch({
                 type: FORGET_USER_SUCCESS,
             });
-            console.log("Email sent");
+            // console.log("Email sent");
             
         } else {
             dispatch({
                 type: FORGET_USER_FAILED
             });
-            console.log("Forget Password ELSE");
+            // console.log("Forget Password ELSE");
         }
     } catch (err) {
         dispatch({
             type: FORGET_USER_FAILED
         });
-        console.log("Forget Password ERROR");
+        // console.log("Forget Password ERROR");
     }
 };
 
 
 
 export const resetpassword = (resetData) => async dispatch => {
-    // console.log(Cookies.get('csrftoken'));
+    // // console.log(Cookies.get('csrftoken'));
     const configAttr = {
         headers: {
             'Accept': 'application/json',
@@ -229,25 +229,25 @@ export const resetpassword = (resetData) => async dispatch => {
     }
 
     try {
-        console.log("In Actions: Reset Password");
+        // console.log("In Actions: Reset Password");
         const res = await axios.post(`${config.serverUrl}/users/update/passwordreset-confirm/`, resetData, configAttr);
 
         if (res.status <= 200 && res.status < 300) {
             dispatch({
                 type: RESET_USER_SUCCESS,
             });
-            console.log("Complete Reset");
+            // console.log("Complete Reset");
             
         } else {
             dispatch({
                 type: RESET_USER_FAILED
             });
-            console.log("Forget Password ELSE");
+            // console.log("Forget Password ELSE");
         }
     } catch (err) {
         dispatch({
             type: RESET_USER_FAILED
         });
-        console.log("Forget Password ERROR");
+        // console.log("Forget Password ERROR");
     }
 };

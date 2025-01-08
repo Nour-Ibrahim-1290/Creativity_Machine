@@ -74,7 +74,7 @@ function Sidebar({
         {/* Sidebar header */}
         <div className="flex justify-center mb-6 ">
           {/* Logo */}
-          <NavLink end to="/history/products" className="block">
+          <NavLink end to="/machine/welcome" className="block">
             <img className="mt-2" src={LogoImage} width="220" height="100" alt="Logo"></img>
           </NavLink>
         </div>

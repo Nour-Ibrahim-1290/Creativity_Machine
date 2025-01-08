@@ -43,8 +43,6 @@ function Signup({ register, isAuthenticated }) {
 			password: formData.password,
 		}
 	
-		console.log("RegisterAction");
-	
 		register(registerData);
 		setAccountCreated(true);
 	}
@@ -90,7 +88,6 @@ function Signup({ register, isAuthenticated }) {
 									}}
 									validationSchema={SignupSchema}
 									onSubmit={(values) => {
-										//console.log(values);
 										LoginForm(values);
 									}}
 								>

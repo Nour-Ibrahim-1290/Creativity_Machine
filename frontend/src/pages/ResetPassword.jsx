@@ -24,9 +24,7 @@ function ResetPassword({ resetpassword }) {
   const [message, setMessage] = useState('');
 
   const resetForm = async (values) => {
-    console.log(values);
     const { new_password } = values;
-    console.log(new_password);
     const data = {
       new_password,
       uidb64: uid,
