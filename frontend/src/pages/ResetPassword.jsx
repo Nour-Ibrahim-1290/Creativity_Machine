@@ -1,9 +1,46 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { Link, Navigate, useParams } from "react-router-dom";
 
-import AuthImage from "../images/auth-image.jpg";
+import AuthImage from "../images/AuthImage.png";
+import LogoImage from "../images/Logo.png";
 
-function ResetPassword() {
+
+import { connect } from "react-redux";
+import { resetpassword } from "../actions/auth";
+import CSRFToken from '../components/CSRFToken';
+
+
+const ResetSchema = Yup.object().shape({
+  new_password: Yup.string().min(8, 'Password is too short - should be 8 chars minimum.').required('Password is required'),
+  confirmpassword: Yup.string().oneOf([Yup.ref('new_password'), null], 'Passwords must match').required('Password confirm is required'),
+});
+
+
+function ResetPassword({ resetpassword }) {
+
+  const { uid, token } = useParams();
+  const [message, setMessage] = useState('');
+
+  const resetForm = async (values) => {
+    console.log(values);
+    const { new_password } = values;
+    console.log(new_password);
+    const data = {
+      new_password,
+      uidb64: uid,
+      token
+    };
+    try {
+      await resetpassword(data);
+      setMessage('Password reset successful');
+      return <Navigate to="/" />;
+    } catch (error) {
+      setMessage('Error resetting password');
+    }
+  };
+
   return (
     <main className="bg-white dark:bg-gray-900">
       <div className="relative md:flex">
@@ -14,33 +51,47 @@ function ResetPassword() {
             <div className="flex-1">
               <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
-                <Link className="block" to="/">
-                  <svg className="fill-violet-500" xmlns="http://www.w3.org/2000/svg" width={32} height={32}>
-                    <path d="M31.956 14.8C31.372 6.92 25.08.628 17.2.044V5.76a9.04 9.04 0 0 0 9.04 9.04h5.716ZM14.8 26.24v5.716C6.92 31.372.63 25.08.044 17.2H5.76a9.04 9.04 0 0 1 9.04 9.04Zm11.44-9.04h5.716c-.584 7.88-6.876 14.172-14.756 14.756V26.24a9.04 9.04 0 0 1 9.04-9.04ZM.044 14.8C.63 6.92 6.92.628 14.8.044V5.76a9.04 9.04 0 0 1-9.04 9.04H.044Z" />
-                  </svg>
+               <Link className="block" to="/">
+                                <img className="mt-10" src={LogoImage} width="95" height="75" alt="Logo"></img>
                 </Link>
               </div>
             </div>
 
             <div className="max-w-sm mx-auto w-full px-4 py-8">
-              <h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6">Reset your Password</h1>
+              <h1 className="text-3xl text-gray-800 dark:text-violet-300 font-bold mb-6">Create New Password</h1>
               {/* Form */}
-              <form>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="email">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
-                    <input id="email" className="form-input w-full" type="email" />
-                  </div>
+              <Formik
+                initialValues={{ new_password: '', confirmpassword: '' }}
+                validationSchema={ResetSchema}
+                onSubmit={resetForm}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <CSRFToken />
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1" htmlFor="new_password">
+                        New Password  <span className="text-red-500">*</span>
+                      </label>
+                      <Field id="new_password" name="new_password" className="form-input w-full" type="password" autoComplete="on" />
+                      <ErrorMessage name="new_password" component="div" className="text-red-500 text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1" htmlFor="confirmpassword">
+                        Enter Password Again  <span className="text-red-500">*</span>
+                      </label>
+                      <Field id="confirmpassword" name="confirmpassword" className="form-input w-full" type="password" autoComplete="on" />
+                      <ErrorMessage name="confirmpassword" component="div" className="text-red-500 text-sm" />
+                    </div>
+                    <div className="flex justify-end mt-6">
+                  <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap">Change Password</button>
                 </div>
-                <div className="flex justify-end mt-6">
-                  <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap">Send Reset Link</button>
-                </div>
-              </form>
-            </div>
+                  </Form>
+                )}
+              </Formik>
+              {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
           </div>
         </div>
+      </div>
 
         {/* Image */}
         <div className="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
@@ -51,4 +102,6 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
+
+
+export default connect(null, { resetpassword })(ResetPassword);

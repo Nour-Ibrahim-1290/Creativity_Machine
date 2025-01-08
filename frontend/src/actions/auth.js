@@ -11,6 +11,10 @@ import {
     LOGOUT_FAILED,
     AUTH_SUCCESS,
     AUTH_FAILED,
+    FORGET_USER_SUCCESS,
+    FORGET_USER_FAILED,
+    RESET_USER_SUCCESS,
+    RESET_USER_FAILED,
 } from './types';
 
 
@@ -171,5 +175,79 @@ export const logout = () => async dispatch => {
             type: LOGOUT_FAILED
         });
         console.log("Logged Out ERROR");
+    }
+};
+
+
+
+export const forgetpassword = (emailData) => async dispatch => {
+    // console.log(Cookies.get('csrftoken'));
+    const configAttr = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        withCredentials: true
+    }
+
+    try {
+        console.log("In Actions: Forget Password");
+        const res = await axios.post(`${config.serverUrl}/users/update/forgetpassword/`, emailData, configAttr);
+
+        if (res.status <= 200 && res.status < 300) {
+            dispatch({
+                type: FORGET_USER_SUCCESS,
+            });
+            console.log("Email sent");
+            
+        } else {
+            dispatch({
+                type: FORGET_USER_FAILED
+            });
+            console.log("Forget Password ELSE");
+        }
+    } catch (err) {
+        dispatch({
+            type: FORGET_USER_FAILED
+        });
+        console.log("Forget Password ERROR");
+    }
+};
+
+
+
+export const resetpassword = (resetData) => async dispatch => {
+    // console.log(Cookies.get('csrftoken'));
+    const configAttr = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        withCredentials: true
+    }
+
+    try {
+        console.log("In Actions: Reset Password");
+        const res = await axios.post(`${config.serverUrl}/users/update/passwordreset-confirm/`, resetData, configAttr);
+
+        if (res.status <= 200 && res.status < 300) {
+            dispatch({
+                type: RESET_USER_SUCCESS,
+            });
+            console.log("Complete Reset");
+            
+        } else {
+            dispatch({
+                type: RESET_USER_FAILED
+            });
+            console.log("Forget Password ELSE");
+        }
+    } catch (err) {
+        dispatch({
+            type: RESET_USER_FAILED
+        });
+        console.log("Forget Password ERROR");
     }
 };

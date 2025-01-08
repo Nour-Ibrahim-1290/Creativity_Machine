@@ -14,22 +14,15 @@ import MachineWelcome from './pages/machine/Welcome';
 import MachineInstruct from './pages/machine/Instructions';
 import MachinePickDevice from './pages/machine/PickDevice';
 
-import Shop from './pages/machine/Shop';
-import Product from './pages/machine/Product';
-import UsersTiles from './pages/machine/UserTiles';
-import CompanyProfile from './pages/machine/CompanyProfile';
 
 
-import Faqs from './pages/utility/Faqs';
 import EmptyState from './pages/utility/EmptyState';
 import PageNotFound from './pages/utility/PageNotFound';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import ResetPasswordRequest from './pages/ForgetPassword';
 import ResetPassword from './pages/ResetPassword';
-import Onboarding01 from './pages/Onboarding01';
-import Onboarding02 from './pages/Onboarding02';
-import Onboarding03 from './pages/Onboarding03';
-import Onboarding04 from './pages/Onboarding04';
+
 
 
 import Account from './pages/settings/Account';
@@ -60,11 +53,8 @@ function App() {
           {/* Signing in routes */}
           <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/onboarding-01" element={<Onboarding01 />} />
-          <Route path="/onboarding-02" element={<Onboarding02 />} />
-          <Route path="/onboarding-03" element={<Onboarding03 />} />
-          <Route path="/onboarding-04" element={<Onboarding04 />} />
+          <Route path="/forget-password" element={<ResetPasswordRequest />} />
+          <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
 
           {/** Creativity Machine Sequance Routes */}
           <Route path="/machine/welcome" element={<MachineWelcome />} />
@@ -73,19 +63,16 @@ function App() {
           
           
           {/** Creativity Machine History Routes */}
-          <Route path="/history/products" element={<Shop />} />
-          <Route path="/history/tests" element={<Product />} />
-          <Route path="/community/users-tiles" element={<UsersTiles />} />
-          <Route path="/job/company-profile" element={<CompanyProfile />} />
+          
 
 
-          {/** My Account */}
+          {/** User Account */}
           <Route path="/settings/account" element={<Account />} />
 
 
           {/** Feedback */}
           <Route path="/settings/feedback" element={<Feedback />} />
-          <Route path="/utility/faqs" element={<Faqs />} />
+          
 
 
           {/** Defaults */}

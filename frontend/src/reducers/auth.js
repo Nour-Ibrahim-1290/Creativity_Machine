@@ -7,6 +7,10 @@ import {
     LOGOUT_FAILED,
     AUTH_SUCCESS,
     AUTH_FAILED,
+    FORGET_USER_SUCCESS,
+    FORGET_USER_FAILED,
+    RESET_USER_SUCCESS,
+    RESET_USER_FAILED,
 } from '../actions/types';
 
 const initialState = {
@@ -41,6 +45,10 @@ export default function(state = initialState, action) {
         case REGISTER_FAILED:
         case LOGIN_FAILED:
         case LOGOUT_FAILED:
+        case FORGET_USER_SUCCESS:
+        case FORGET_USER_FAILED:
+        case RESET_USER_SUCCESS:
+        case RESET_USER_FAILED:
             return state;
         default:
             return state;

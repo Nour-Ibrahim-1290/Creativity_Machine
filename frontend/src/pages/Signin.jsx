@@ -23,23 +23,9 @@ const SigninSchema = Yup.object().shape({
 
 function Signin({ login, isAuthenticated }) {
 
-  // const [loggedIn, setLoggedIn] = useState(false);
 
   const LoginForm = async (loginData) => {
-    // Handle form submission
-    console.log(loginData);
-  
-    // const response = await axios.post(`${config.serverUrl}/users/login/`, values);
-    // if (response.status >= 200 && response.status < 300) {
-    //     console.log('Sign In Successfully!');
-    //     localStorage.setItem('userData', JSON.stringify(response.data));
-    //     navigate('/machine/welcome');
-    // } else {
-    //     // Handle the case where the first request was not successful
-    //     console.error('There was a Problem Signing in to Account!');
-    // }
     login(loginData);
-    // setLoggedIn(true);
   };
 
   if (isAuthenticated)
@@ -95,7 +81,7 @@ function Signin({ login, isAuthenticated }) {
                     </div>
                     <div className="flex items-center justify-between mt-6">
                       <div className="mr-1 dark:text-violet-200">
-                        <Link className="text-sm underline hover:no-underline" to="/reset-password">
+                        <Link className="text-sm underline hover:no-underline" to="/forget-password">
                           Forgot Password?
                         </Link>
                       </div>
