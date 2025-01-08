@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'rest_framework_simplejwt',
     'corsheaders',
     'users',
 ]
@@ -105,6 +104,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Session Configuration
@@ -201,30 +201,6 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'x-csrftoken',
 ]
-
-
-# CORS_ALLOW_METHODS = [
-#     'GET',
-#     'POST',
-#     'PUT',
-#     'PATCH',
-#     'DELETE',
-#     'OPTIONS',
-# ]
-
-
-
-# # Settings for REST_FRAMEWORK
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
-# }
-
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60*100),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-# }
 
 
 

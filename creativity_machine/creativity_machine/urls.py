@@ -7,12 +7,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-# from .views import get_csrf_token
-
 urlpatterns = [
     path('api-auth', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
-    # path('api/get-csrf-token/', get_csrf_token),
     path('users/', include('users.api.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

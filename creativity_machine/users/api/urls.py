@@ -3,7 +3,6 @@ from django.urls import include, path
 
 from .views import (checkAuthenticatedView, GetCSRFToken, 
                     GetUsersView, GetUserView)
-# from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('register/', include('users.api.register.urls')),
@@ -15,5 +14,4 @@ urlpatterns = [
     path('get-csrf-token/', GetCSRFToken.as_view()),
     path('get_users/', GetUsersView.as_view()),
     path('get_user/', GetUserView.as_view()),
-    # path('token-refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

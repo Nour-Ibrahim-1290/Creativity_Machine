@@ -19,12 +19,12 @@ class GetCSRFToken(APIView):
 
 
 class checkAuthenticatedView(APIView):
+    """Check User Authentication"""
     def get(self, request, format=None):
         user = self.request.user
 
         try:
             IsAuthenticated = user.is_authenticated
-            print(IsAuthenticated)
 
             if IsAuthenticated:
                 return Response({'isAuthenticated': 'success'})
@@ -36,6 +36,7 @@ class checkAuthenticatedView(APIView):
 
 
 class GetUsersView(APIView):
+    """GET All Users"""
     permission_classes = (permissions.AllowAny, )
 
     def get(self, request, format=None):
@@ -49,14 +50,13 @@ class GetUsersView(APIView):
 
 
 class GetUserView(APIView):
-
+    """GET User Profile"""
     def get(self, request, format=None):
         try:
             user = self.request.user
 
             user_serializer = UserSerializer(user)
 
-            # print(user)
             return Response({'profile': user_serializer.data, 'email': str(user.email)})
         except:
             return Response({'error': 'Error Retrieving Profile'}, status=status.HTTP_401_UNAUTHORIZED)

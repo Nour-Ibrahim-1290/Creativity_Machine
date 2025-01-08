@@ -38,6 +38,7 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class User(AbstractBaseUser):
     USER_GENDER_CHOICES = (
         ('male', 'male'),
